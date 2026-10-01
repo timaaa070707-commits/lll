@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Жасанды интеллект: тарихы, дамуы және болашағы</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#05060f;--tx:#e8ecff;--mu:#9aa3c7;--a:#3ea6ff;--b:#a855f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+#bg{position:fixed;inset:0;z-index:0}
+#app{position:relative;height:100%;z-index:1}
+.s{position:absolute;inset:0;padding:28px 6vw 76px;display:flex;flex-direction:column;justify-content:center;opacity:0;transform:scale(1.04);transition:opacity .7s,transform .7s;pointer-events:none;overflow-y:auto}
+.s.on{opacity:1;transform:none;pointer-events:auto}
+h1{font-size:clamp(30px,6vw,64px);line-height:1.1;margin:.2em 0;font-weight:800;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px #3ea6ff55)}
+h2{font-size:clamp(26px,4.4vw,46px);margin:0 0 .5em;font-weight:800;text-shadow:0 0 22px #3ea6ff66}
+h2::after{content:"";display:block;width:70px;height:4px;margin-top:10px;border-radius:2px;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:0 0 14px var(--a)}
+.s.on h1,.s.on h2{animation:up .7s both .15s}
+em{font-style:normal;color:var(--a);font-weight:600;text-shadow:0 0 12px #3ea6ff88}
+.lead{font-size:clamp(17px,2.6vw,26px);color:var(--mu);max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.card{padding:18px 20px;border-radius:16px;background:#0d1230aa;border:1px solid #3ea6ff44;box-shadow:0 0 22px #a855f722,inset 0 0 20px #3ea6ff0f;backdrop-filter:blur(6px);opacity:0}
+.card h3{margin:0 0 6px;font-size:clamp(17px,2.2vw,22px);color:var(--b);text-shadow:0 0 10px #a855f788}
+.card p{margin:0;color:var(--tx);font-size:clamp(14px,1.9vw,18px);line-height:1.45}
+.s.on .card{animation:up .6s both calc(.4s + var(--i)*.18s)}
+.tl{position:relative;display:flex;flex-wrap:wrap;gap:14px;padding-top:18px}
+.tl::before{content:"";position:absolute;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:0 0 12px var(--a);transform-origin:left;transform:scaleX(0)}
+.s.on .tl::before{animation:grow 1.4s forwards .3s}
+.ev{flex:1 1 150px;opacity:0;padding-top:6px}
+.ev b{display:block;font-size:clamp(22px,3vw,32px);color:var(--a);text-shadow:0 0 14px var(--a)}
+.ev span{font-size:clamp(14px,1.8vw,17px);color:var(--tx);line-height:1.4}
+.s.on .ev{animation:right .6s both calc(.5s + var(--i)*.25s)}
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:24px;justify-content:center}
+.hero>div:first-child{flex:1 1 320px}
+.vis{flex:0 1 340px;max-width:100%}
+.tag{letter-spacing:.3em;color:var(--b);font-size:13px;font-weight:600;margin:0}
+.who{color:var(--mu);font-size:15px;margin-top:20px}
+#nav{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 6vw calc(12px + env(safe-area-inset-bottom,0px))}
+#nav button{background:#0d1230cc;color:var(--tx);border:1px solid #3ea6ff66;border-radius:999px;width:44px;height:44px;font-size:18px;cursor:pointer}
+#pb{flex:1;height:3px;background:#ffffff1a;border-radius:2px;overflow:hidden}
+#pb i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));transition:width .5s}
+#ct{color:var(--mu);font-size:13px;min-width:44px;text-align:center}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes right{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+@keyframes grow{to{transform:scaleX(1)}}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style></head><body>
+<canvas id="bg"></canvas><div id="app"></div>
+<div id="nav"><button id="pv" aria-label="Алдыңғы">‹</button><div id="pb"><i></i></div><span id="ct"></span><button id="nx" aria-label="Келесі">›</button></div>
+<script>
+const net=()=>{const L=[3,5,5,2],X=[30,100,170,240];let ns=[],s='';L.forEach((n,i)=>{for(let j=0;j<n;j++)ns.push([X[i],150-(n-1)*22+j*44,i])});
+ns.forEach(a=>ns.forEach(b=>{if(b[2]==a[2]+1)s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#3ea6ff" stroke-opacity=".35"/>`}));
+ns.forEach((a,i)=>s+=`<circle cx="${a[0]}" cy="${a[1]}" r="8" fill="${a[2]%2?'#a855f7':'#3ea6ff'}" style="filter:drop-shadow(0 0 6px currentColor);animation:pulse ${2+i%3}s infinite"/>`);
+return `<svg class="vis" viewBox="0 0 270 300">${s}</svg>`};
+const S=[
+{k:'hero',tag:'ARTIFICIAL INTELLIGENCE',t:'Жасанды интеллект: тарихы, дамуы және болашағы',sub:'Идеядан генеративті дәуірге дейін',who:'Орындаған: [Студенттің аты-жөні] · [Топ] · Жетекші: [Аты-жөні]',v:1},
+{t:'Жасанды интеллект дегеніміз не?',c:[['Анықтама','Машиналардың <em>адамға тән ойлау</em>, оқу және шешім қабылдау қабілетін модельдейтін технология.'],['Негізгі міндеттер','<em>Үйрену</em>, деректерді талдау, болжау, бейне мен тілді тану.'],['Мысалдар','Дауыстық көмекші, онлайн аудармашы, навигация, спам сүзгісі.']]},
+{t:'Пайда болу тарихы',tl:[['1950','<em>Алан Тьюринг</em> «Машиналар ойлай ала ма?» сұрағын қойды, Тьюринг тесті ұсынылды'],['1956','<em>Dartmouth конференциясы</em>: «жасанды интеллект» термині пайда болды'],['1966','<em>ELIZA</em> — алғашқы чат-боттардың бірі'],['1997','<em>Deep Blue</em> шахматта Каспаровты жеңді'],['2012','<em>AlexNet</em>: терең оқытудың серпілісі'],['2022','<em>ChatGPT</em> көпшілікке жол ашты']]},
+{t:'Дамудың негізгі кезеңдері',c:[['1970–80 жж.','Алғашқы <em>сараптамалық жүйелер</em>: ережеге негізделген шешімдер'],['1990–2000 жж.','<em>Машиналық оқыту</em>: деректерден заңдылық табу'],['2010 жж.','<em>Терең оқыту</em>: көпқабатты нейрондық желілер'],['2017 жылдан','<em>Генеративті AI</em>: мәтін, сурет, код жасау']]},
+{t:'Қазіргі кездегі AI',c:[['Тілдік модельдер','ChatGPT сияқты <em>мәтінмен жұмыс</em> істейтін жүйелер'],['Компьютерлік көру','Бет пен нысанды <em>тану</em>, медициналық суреттер'],['Дауыстық AI','Дауыспен басқару және <em>сөйлеуді тану</em>'],['Ұсыным жүйелері','Музыка, бейне, сатып алу <em>ұсыныстары</em>'],['Робототехника','Өндіріс пен логистикадағы <em>роботтар</em>']]},
+{t:'AI ғылым мен білімдегі рөлі',c:[['Ғылыми зерттеулер','Үлкен деректерден <em>жаңа заңдылықтар</em> табу'],['Медицина','Ауруды <em>ерте диагностикалау</em>, дәрі іздеу'],['Білім беру','<em>Жеке оқу траекториясы</em>, виртуалды көмекші'],['Деректерді талдау','Болжау мен <em>тез шешім</em> қабылдау']]},
+{t:'Артықшылықтары мен тәуекелдері',c:[['Артықшылықтары','<em>Жылдамдық</em>, дәлдік, рутинаны автоматтандыру'],['Қауіптері','Жұмыс орындарының өзгеруі, <em>қате шешімдер</em>'],['Деректер қауіпсіздігі','Жеке деректердің <em>құпиялылығы</em>'],['Жалған ақпарат','<em>Deepfake</em> және манипуляция қаупі']]},
+{t:'AI болашағы',c:[['Автоматтандыру','Күрделі процестер <em>автономды</em> жұмыс істейді'],['Адам мен AI','<em>Ынтымақтастық</em>: адам бағыттайды, AI көмектеседі'],['Роботтар','Үйде, өндірісте, қызмет көрсетуде <em>көмекші роботтар</em>'],['Жаңа мамандықтар','AI-инженер, <em>промпт-дизайнер</em>, этика маманы']]},
+{t:'Қорытынды',p:'AI — адамды толық алмастырушы емес, <em>адамның мүмкіндігін кеңейтетін</em> технология.',c:[['Тарих','1950-жылдардан <em>генеративті AI-ға</em> дейін'],['Қазір','Ғылым, білім, медицинада <em>кеңінен қолданылады</em>'],['Болашақ','Жауапты және <em>этикалық</em> қолдану маңызды']]},
+{k:'hero',tag:'AI · FUTURE',t:'Назарларыңызға рақмет!',sub:'Сұрақтарыңызға дайынмын',who:'',v:1}
+];
+const app=document.getElementById('app');
+S.forEach(d=>{const e=document.createElement('section');e.className='s';let h='';
+if(d.k=='hero')h=`<div class="hero"><div><p class="tag">${d.tag}</p><h1>${d.t}</h1><p class="lead">${d.sub}</p><p class="who">${d.who}</p></div>${net()}</div>`;
+else{h=`<h2>${d.t}</h2>`;if(d.p)h+=`<p class="lead">${d.p}</p>`;
+if(d.tl)h+=`<div class="tl">${d.tl.map((x,i)=>`<div class="ev" style="--i:${i}"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>`;
+if(d.c)h+=`<div class="grid">${d.c.map((x,i)=>`<div class="card" style="--i:${i}"><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join('')}</div>`}
+e.innerHTML=h;app.appendChild(e)});
+const E=[...app.children];let c=0;
+function go(n){c=Math.max(0,Math.min(E.length-1,n));E.forEach((e,i)=>e.classList.toggle('on',i==c));document.getElementById('ct').textContent=(c+1)+' / '+E.length;document.querySelector('#pb i').style.width=((c+1)/E.length*100)+'%'}
+pv.onclick=()=>go(c-1);nx.onclick=()=>go(c+1);
+addEventListener('keydown',k=>{if(['ArrowRight','ArrowDown',' ','PageDown'].includes(k.key))go(c+1);if(['ArrowLeft','ArrowUp','PageUp'].includes(k.key))go(c-1)});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)go(c+(d<0?1:-1))});
+go(0);
+const cv=document.getElementById('bg'),x=cv.getContext('2d');let W,H,P=[];
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;P=Array.from({length:Math.min(55,W/14|0)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3}))}
+rs();addEventListener('resize',rs);
+(function f(){x.clearRect(0,0,W,H);P.forEach(p=>{p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;x.fillStyle='#3ea6ff';x.fillRect(p.x,p.y,2,2)});
+for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<130){x.strokeStyle=`rgba(120,110,255,${.25*(1-d/130)})`;x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke()}}
+requestAnimationFrame(f)})();
+</script></body></html>
